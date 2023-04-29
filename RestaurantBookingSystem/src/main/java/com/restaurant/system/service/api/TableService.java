@@ -1,17 +1,17 @@
 package com.restaurant.system.service.api;
 
-import com.restaurant.system.model.Table;
+import com.restaurant.system.model.RestaurantTable;
 
 import java.util.List;
 
 public interface TableService {
-    Table addNewTable(Table table);
+    RestaurantTable addNewTable(RestaurantTable table);
 
-    Table getTable(long id);
+    RestaurantTable getTable(long id);
 
-    List<Table> getAllTablesForRestaurant(long restaurantId);
+    List<RestaurantTable> getAllTablesForRestaurant(long restaurantId);
 
-    Table updateTable(Table table);
+    RestaurantTable updateTable(RestaurantTable table);
 
     void deleteTable(long id);
 }

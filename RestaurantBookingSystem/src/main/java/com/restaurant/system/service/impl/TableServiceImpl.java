@@ -1,6 +1,6 @@
 package com.restaurant.system.service.impl;
 
-import com.restaurant.system.model.Table;
+import com.restaurant.system.model.RestaurantTable;
 import com.restaurant.system.repository.TableRepository;
 import com.restaurant.system.service.api.TableService;
 import lombok.AllArgsConstructor;
@@ -17,23 +17,23 @@ public class TableServiceImpl implements TableService {
     private TableRepository repository;
 
     @Override
-    public Table addNewTable(Table table) {
+    public RestaurantTable addNewTable(RestaurantTable table) {
         log.info("Creating new Table with id {}", table.getID());
 
         if (repository.existsById(table.getID()))
             throw new IllegalArgumentException(); // TODO
 
-        Table newTable = repository.save(table);
+        RestaurantTable newTable = repository.save(table);
 
         log.info("Table with id {} successfully created", table.getID());
         return newTable;
     }
 
     @Override
-    public Table getTable(long id) {
+    public RestaurantTable getTable(long id) {
         log.info("Getting Table with id {}", id);
 
-        Optional<Table> table = repository.findById(id);
+        Optional<RestaurantTable> table = repository.findById(id);
         if (table.isEmpty())
             throw new IllegalArgumentException();
 
@@ -41,21 +41,21 @@ public class TableServiceImpl implements TableService {
     }
 
     @Override
-    public List<Table> getAllTablesForRestaurant(long restaurantId) {
+    public List<RestaurantTable> getAllTablesForRestaurant(long restaurantId) {
         log.info("Getting all Tables in restaurant with id {}", restaurantId);
         return repository.findAllByRestaurantID(restaurantId);
     }
 
     @Override
-    public Table updateTable(Table table) {
+    public RestaurantTable updateTable(RestaurantTable table) {
         log.info("Updating Table with id {}", table.getID());
 
-        Optional<Table> optionalTable = repository.findById(table.getID());
+        Optional<RestaurantTable> optionalTable = repository.findById(table.getID());
         if (optionalTable.isEmpty())
             throw new IllegalArgumentException(); // TODO
 
         //persistedUser = populateWithPresentFields(); // TODO create method
-        Table storedTable = repository.save(optionalTable.get());
+        RestaurantTable storedTable = repository.save(optionalTable.get());
 
         log.info("Table with id {} successfully updated", storedTable.getID());
         return storedTable;

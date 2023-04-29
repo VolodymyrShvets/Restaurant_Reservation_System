@@ -1,6 +1,6 @@
 package com.restaurant.system.controller;
 
-import com.restaurant.system.model.Table;
+import com.restaurant.system.model.RestaurantTable;
 import com.restaurant.system.service.api.TableService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,25 +16,25 @@ public class TableController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Table addNewTable(@RequestBody Table table) {
+    public RestaurantTable addNewTable(@RequestBody RestaurantTable table) {
         return tableService.addNewTable(table);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public Table getTable(@PathVariable long id) {
+    public RestaurantTable getTable(@PathVariable long id) {
         return tableService.getTable(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{restId}")
-    public List<Table> getAllTablesForRestaurant(@PathVariable long restId) {
+    public List<RestaurantTable> getAllTablesForRestaurant(@PathVariable long restId) {
         return tableService.getAllTablesForRestaurant(restId);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public Table updateTable(@RequestBody Table table) {
+    public RestaurantTable updateTable(@RequestBody RestaurantTable table) {
         return tableService.updateTable(table);
     }
 
