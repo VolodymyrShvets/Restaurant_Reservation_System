@@ -1,9 +1,6 @@
 package com.restaurant.system.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -12,14 +9,17 @@ import org.springframework.stereotype.Component;
 @Setter
 @Getter
 @Component
-@jakarta.persistence.Table(name = "Table")
-public class Table {
+public class RestaurantTable {
     @Id
     private long ID;
 
-    private long administratorID;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID", referencedColumnName = "restaurant_table.ID")
+    private User administrator;
 
-    private long restaurantID;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_ID", nullable = false)
+    private Restaurant restaurant;
 
     private int numberOfSeats;
 

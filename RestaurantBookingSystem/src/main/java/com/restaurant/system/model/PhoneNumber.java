@@ -1,7 +1,6 @@
 package com.restaurant.system.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,5 +9,13 @@ import lombok.Setter;
 @Getter
 public class PhoneNumber {
     @Id
-    private String number;
+    private long ID;
+
+    private String phoneNumber;
+
+    @OneToOne(mappedBy = "phoneNumber")
+    private Restaurant restaurant;
+
+    @OneToOne(mappedBy = "phoneNumber")
+    private User user;
 }
