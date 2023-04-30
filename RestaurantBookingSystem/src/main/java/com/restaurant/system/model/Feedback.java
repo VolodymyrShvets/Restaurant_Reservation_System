@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Component
 public class Feedback {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
 
     @ManyToOne

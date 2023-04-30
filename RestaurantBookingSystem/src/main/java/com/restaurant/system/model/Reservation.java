@@ -1,9 +1,6 @@
 package com.restaurant.system.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -16,6 +13,7 @@ import java.time.LocalDateTime;
 @Component
 public class Reservation {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
 
     @ManyToOne

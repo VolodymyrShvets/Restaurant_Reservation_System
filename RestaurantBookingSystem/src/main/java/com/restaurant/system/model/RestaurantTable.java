@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RestaurantTable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
 
     @OneToOne(cascade = CascadeType.ALL)

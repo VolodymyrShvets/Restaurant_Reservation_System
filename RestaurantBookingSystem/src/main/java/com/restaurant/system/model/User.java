@@ -13,6 +13,7 @@ import java.util.List;
 @Component
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
 
     private String firstName;
