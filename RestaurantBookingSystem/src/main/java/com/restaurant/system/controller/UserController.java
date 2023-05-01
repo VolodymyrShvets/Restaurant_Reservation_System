@@ -1,5 +1,7 @@
 package com.restaurant.system.controller;
 
+import com.restaurant.system.model.Administrator;
+import com.restaurant.system.model.Customer;
 import com.restaurant.system.model.User;
 import com.restaurant.system.service.api.UserService;
 import lombok.AllArgsConstructor;
@@ -15,9 +17,15 @@ public class UserController {
     private UserService userService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public User registerNewUser(@RequestBody User user) {
-        return userService.registerNewUser(user);
+    @PostMapping("/customer")
+    public Customer registerNewCustomer(@RequestBody Customer customer) {
+        return userService.registerNewCustomer(customer);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/admin")
+    public Administrator registerNewAdministrator(@RequestBody Administrator admin) {
+        return userService.registerNewAdministrator(admin);
     }
 
     @ResponseStatus(HttpStatus.OK)
