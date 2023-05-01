@@ -11,6 +11,7 @@ import com.restaurant.system.repository.TableRepository;
 import com.restaurant.system.service.api.ReservationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,7 +21,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ReservationServiceImpl implements ReservationService {
     private ReservationRepository reservationRepository;
+    @Lazy
     private CustomerRepository customerRepository;
+    @Lazy
     private TableRepository tableRepository;
 
     @Override

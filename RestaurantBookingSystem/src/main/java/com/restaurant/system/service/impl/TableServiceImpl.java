@@ -9,6 +9,7 @@ import com.restaurant.system.repository.TableRepository;
 import com.restaurant.system.service.api.TableService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TableServiceImpl implements TableService {
     private TableRepository repository;
+    @Lazy
     private AdministratorRepository administratorRepository;
+    @Lazy
     private RestaurantRepository restaurantRepository;
 
     @Override

@@ -7,6 +7,7 @@ import com.restaurant.system.repository.FeedbackRepository;
 import com.restaurant.system.service.api.FeedbackService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class FeedbackServiceImpl implements FeedbackService {
     private FeedbackRepository repository;
+    @Lazy
     private CustomerRepository customerRepository;
 
     @Override
