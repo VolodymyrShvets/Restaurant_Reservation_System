@@ -1,11 +1,11 @@
 package com.restaurant.system.service.impl;
 
+import com.restaurant.system.model.Administrator;
 import com.restaurant.system.model.Restaurant;
 import com.restaurant.system.model.RestaurantTable;
-import com.restaurant.system.model.User;
+import com.restaurant.system.repository.AdministratorRepository;
 import com.restaurant.system.repository.RestaurantRepository;
 import com.restaurant.system.repository.TableRepository;
-import com.restaurant.system.repository.UserRepository;
 import com.restaurant.system.service.api.TableService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TableServiceImpl implements TableService {
     private TableRepository repository;
-    private UserRepository userRepository;
+    private AdministratorRepository administratorRepository;
     private RestaurantRepository restaurantRepository;
 
     @Override
@@ -29,15 +29,15 @@ public class TableServiceImpl implements TableService {
         if (repository.existsById(table.getID()))
             throw new IllegalArgumentException(); // TODO
 
-        Optional<User> user = userRepository.findById(table.getAdministrator().getID());
-        if (user.isEmpty())
+        Optional<Administrator> admin = administratorRepository.findById(table.getAdministrator().getID());
+        if (admin.isEmpty())
             throw new IllegalArgumentException();
 
         Optional<Restaurant> restaurant = restaurantRepository.findById(table.getRestaurant().getID());
         if (restaurant.isEmpty())
             throw new IllegalArgumentException();
 
-        table.setAdministrator(user.get());
+        table.setAdministrator(admin.get());
         table.setRestaurant(restaurant.get());
 
         RestaurantTable newTable = repository.save(table);

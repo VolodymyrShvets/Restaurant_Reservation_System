@@ -1,9 +1,9 @@
 package com.restaurant.system.service.impl;
 
+import com.restaurant.system.model.Customer;
 import com.restaurant.system.model.Feedback;
-import com.restaurant.system.model.User;
+import com.restaurant.system.repository.CustomerRepository;
 import com.restaurant.system.repository.FeedbackRepository;
-import com.restaurant.system.repository.UserRepository;
 import com.restaurant.system.service.api.FeedbackService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class FeedbackServiceImpl implements FeedbackService {
     private FeedbackRepository repository;
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
 
     @Override
     public Feedback leaveFeedback(Feedback feedback) {
@@ -25,12 +25,11 @@ public class FeedbackServiceImpl implements FeedbackService {
         if (repository.existsById(feedback.getID()))
             throw new IllegalArgumentException(); // TODO
 
-        User user = userRepository.findById(feedback.getUser().getID()).get();
+        Customer customer = customerRepository.findById(feedback.getCustomer().getID()).get();
 
-        feedback.setUser(user);
-        user.getFeedbacks().add(feedback);
-
-        userRepository.save(user);
+        customer.getFeedbacks().add(feedback);
+        feedback.setCustomer(customer);
+        customerRepository.save(customer);
 
         log.info("Feedback successfully created");
         return feedback;
