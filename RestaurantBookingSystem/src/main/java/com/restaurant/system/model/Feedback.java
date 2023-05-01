@@ -14,13 +14,13 @@ import java.time.LocalDateTime;
 @Component
 public class Feedback {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     @JsonBackReference
-    private User user;
+    private Customer customer;
 
     private LocalDateTime creationDate;
 
