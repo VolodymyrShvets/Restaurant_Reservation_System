@@ -27,7 +27,7 @@ public class TableController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{restId}")
+    @GetMapping("/rest/{restId}")
     public List<RestaurantTable> getAllTablesForRestaurant(@PathVariable long restId) {
         return tableService.getAllTablesForRestaurant(restId);
     }
