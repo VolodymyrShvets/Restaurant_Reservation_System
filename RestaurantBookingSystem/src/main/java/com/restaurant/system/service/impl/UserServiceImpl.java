@@ -6,6 +6,7 @@ import com.restaurant.system.service.api.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(String email) {
         log.info("Deleting the User with email {}", email);
         repository.deleteByEmail(email);
