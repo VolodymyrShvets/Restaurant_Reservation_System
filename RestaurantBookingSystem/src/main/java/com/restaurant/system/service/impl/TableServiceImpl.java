@@ -1,7 +1,11 @@
 package com.restaurant.system.service.impl;
 
+import com.restaurant.system.model.Restaurant;
 import com.restaurant.system.model.RestaurantTable;
+import com.restaurant.system.model.User;
+import com.restaurant.system.repository.RestaurantRepository;
 import com.restaurant.system.repository.TableRepository;
+import com.restaurant.system.repository.UserRepository;
 import com.restaurant.system.service.api.TableService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +19,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TableServiceImpl implements TableService {
     private TableRepository repository;
+    private UserRepository userRepository;
+    private RestaurantRepository restaurantRepository;
 
     @Override
     public RestaurantTable addNewTable(RestaurantTable table) {
@@ -22,6 +28,17 @@ public class TableServiceImpl implements TableService {
 
         if (repository.existsById(table.getID()))
             throw new IllegalArgumentException(); // TODO
+
+        Optional<User> user = userRepository.findById(table.getAdministrator().getID());
+        if (user.isEmpty())
+            throw new IllegalArgumentException();
+
+        Optional<Restaurant> restaurant = restaurantRepository.findById(table.getRestaurant().getID());
+        if (restaurant.isEmpty())
+            throw new IllegalArgumentException();
+
+        table.setAdministrator(user.get());
+        table.setRestaurant(restaurant.get());
 
         RestaurantTable newTable = repository.save(table);
 
