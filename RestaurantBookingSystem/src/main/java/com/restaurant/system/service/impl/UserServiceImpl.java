@@ -11,6 +11,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +23,12 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private UserRepository repository;
+    @Lazy
     private CustomerRepository customerRepository;
+    @Lazy
     private AdministratorRepository administratorRepository;
+    @Lazy
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public Customer registerNewCustomer(Customer customer) {
@@ -31,6 +37,8 @@ public class UserServiceImpl implements UserService {
         if (customerRepository.existsByEmail(customer.getEmail()))
             throw new IllegalArgumentException(); // TODO create UserAlreadyExists exception
 
+        String hashedPassword = bCryptPasswordEncoder.encode(customer.getPassword());
+        customer.setPassword(hashedPassword);
         Customer newCustomer = customerRepository.save(customer);
 
         log.info("Customer with email {} successfully created", newCustomer.getEmail());
@@ -44,6 +52,8 @@ public class UserServiceImpl implements UserService {
         if (administratorRepository.existsByEmail(admin.getEmail()))
             throw new IllegalArgumentException(); // TODO create UserAlreadyExists exception
 
+        String hashedPassword = bCryptPasswordEncoder.encode(admin.getPassword());
+        admin.setPassword(hashedPassword);
         Administrator newAdmin = administratorRepository.save(admin);
 
         log.info("Administrator with email {} successfully created", newAdmin.getEmail());
