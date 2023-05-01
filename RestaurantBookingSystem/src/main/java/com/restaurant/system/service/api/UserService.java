@@ -1,11 +1,15 @@
 package com.restaurant.system.service.api;
 
+import com.restaurant.system.model.Administrator;
+import com.restaurant.system.model.Customer;
 import com.restaurant.system.model.User;
 
 import java.util.List;
 
 public interface UserService {
-    User registerNewUser(User user);
+    Customer registerNewCustomer(Customer customer);
+
+    Administrator registerNewAdministrator(Administrator admin);
 
     User getUser(String email);
 
