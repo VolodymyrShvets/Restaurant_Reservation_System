@@ -1,7 +1,9 @@
 package com.restaurant.system.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +14,15 @@ import java.util.List;
 @Setter
 @Getter
 @Component
+@NoArgsConstructor
 public class Restaurant {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_ID", referencedColumnName = "ID")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "address_ID")
     private Address address;
 
     //private Owner owner;
@@ -27,12 +31,15 @@ public class Restaurant {
 
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "phoneNumber_ID", referencedColumnName = "ID")
-    private PhoneNumber phoneNumber;
+    private String phoneNumber;
 
     //private RATING;
 
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<RestaurantTable> tables;
+
+    Restaurant(String id) {
+        ID = Integer.parseInt(id);
+    }
 }

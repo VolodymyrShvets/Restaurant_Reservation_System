@@ -1,5 +1,6 @@
 package com.restaurant.system.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,7 +16,4 @@ public class Address {
     private String country;
     private String city;
     private String location; // street + building
-
-    @OneToOne(mappedBy = "address")
-    private Restaurant restaurant;
 }

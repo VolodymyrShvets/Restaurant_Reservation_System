@@ -1,5 +1,6 @@
 package com.restaurant.system.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +15,13 @@ public class RestaurantTable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID", referencedColumnName = "restaurant_table.ID")
+    @ManyToOne
+    @JoinColumn(name = "administrator_id")
     private User administrator;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurant_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    @JsonBackReference
     private Restaurant restaurant;
 
     private int numberOfSeats;

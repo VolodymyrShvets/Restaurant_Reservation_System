@@ -1,5 +1,6 @@
 package com.restaurant.system.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +17,9 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
 
-    @ManyToOne
-    @JoinColumn(name = "user_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     private LocalDateTime creationDate;
