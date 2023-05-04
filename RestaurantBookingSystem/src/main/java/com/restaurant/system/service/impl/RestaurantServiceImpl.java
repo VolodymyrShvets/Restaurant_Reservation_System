@@ -1,8 +1,11 @@
 package com.restaurant.system.service.impl;
 
 import com.restaurant.system.model.Restaurant;
+import com.restaurant.system.model.exception.EntityAlreadyExistsException;
+import com.restaurant.system.model.exception.EntityNotFoundException;
 import com.restaurant.system.repository.RestaurantRepository;
 import com.restaurant.system.service.api.RestaurantService;
+import com.restaurant.system.service.mapper.RestaurantMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         log.info("Creating new Restaurant with id {}", restaurant.getID());
 
         if (repository.existsById(restaurant.getID()))
-            throw new IllegalArgumentException(); // TODO create RepositoryAlreadyExists exception
+            throw new EntityAlreadyExistsException(Restaurant.class, "id " + restaurant.getID());
 
         Restaurant newRestaurant = repository.save(restaurant);
 
@@ -35,7 +38,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         Optional<Restaurant> restaurant = repository.findById(id);
         if (restaurant.isEmpty())
-            throw new IllegalArgumentException(); // TODO
+            throw new EntityNotFoundException(Restaurant.class, "id " + id);
 
         return restaurant.get();
     }
@@ -52,10 +55,10 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         Optional<Restaurant> optionalRestaurant = repository.findById(restaurant.getID());
         if (optionalRestaurant.isEmpty())
-            throw new IllegalArgumentException(); // TODO create exception
+            throw new EntityNotFoundException(Restaurant.class, "id " + restaurant.getID());
 
-        //persistedUser = populateWithPresentFields(); // TODO create method
-        Restaurant storedRestaurant = repository.save(optionalRestaurant.get());
+        Restaurant newRestaurant = RestaurantMapper.INSTANCE.populateRestaurantWithPresentRestaurantFields(optionalRestaurant.get(), restaurant);
+        Restaurant storedRestaurant = repository.save(newRestaurant);
 
         log.info("Restaurant with id {} successfully updated", storedRestaurant.getID());
         return storedRestaurant;

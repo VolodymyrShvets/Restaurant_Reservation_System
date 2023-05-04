@@ -2,14 +2,18 @@ package com.restaurant.system.service.impl;
 
 import com.restaurant.system.model.Customer;
 import com.restaurant.system.model.Feedback;
+import com.restaurant.system.model.exception.EntityAlreadyExistsException;
+import com.restaurant.system.model.exception.EntityNotFoundException;
 import com.restaurant.system.repository.CustomerRepository;
 import com.restaurant.system.repository.FeedbackRepository;
 import com.restaurant.system.service.api.FeedbackService;
+import com.restaurant.system.service.mapper.FeedbackMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -25,7 +29,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         log.info("Creating new Feedback with id {}", feedback.getID());
 
         if (repository.existsById(feedback.getID()))
-            throw new IllegalArgumentException(); // TODO
+            throw new EntityAlreadyExistsException(Feedback.class, "id " + feedback.getID());
 
         Customer customer = customerRepository.findById(feedback.getCustomer().getID()).get();
 
@@ -43,9 +47,16 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         Optional<Feedback> feedback = repository.findById(id);
         if (feedback.isEmpty())
-            throw new IllegalArgumentException(); // TODO create FeedbackNotFound exception
+            throw new EntityNotFoundException(Feedback.class, "id " + id);
 
         return feedback.get();
+    }
+
+    @Override
+    public List<Feedback> getAllUserFeedbacks(long customerId) {
+        log.info("Receiving all Feedbacks from Customer with id {}", customerId);
+
+        return repository.findAllByCustomerID(customerId);
     }
 
     @Override
@@ -54,10 +65,10 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         Optional<Feedback> persistedFeedback = repository.findById(feedback.getID());
         if (persistedFeedback.isEmpty())
-            throw new IllegalArgumentException(); // TODO create UserNotFound exception
+            throw new EntityNotFoundException(Feedback.class, "id " + feedback.getID());
 
-        //persistedUser = populateWithPresentFields(); // TODO create method
-        Feedback storedFeedback = repository.save(persistedFeedback.get());
+        Feedback newFeedback = FeedbackMapper.INSTANCE.populateFeedbackWithPresentFeedbackFields(persistedFeedback.get(), feedback);
+        Feedback storedFeedback = repository.save(newFeedback);
 
         log.info("Feedback with id {} successfully updated", storedFeedback.getID());
         return storedFeedback;

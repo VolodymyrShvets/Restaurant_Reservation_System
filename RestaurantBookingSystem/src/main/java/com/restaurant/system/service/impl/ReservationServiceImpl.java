@@ -1,10 +1,10 @@
 package com.restaurant.system.service.impl;
 
-import com.restaurant.system.model.Administrator;
 import com.restaurant.system.model.Customer;
 import com.restaurant.system.model.Reservation;
 import com.restaurant.system.model.RestaurantTable;
-import com.restaurant.system.repository.AdministratorRepository;
+import com.restaurant.system.model.exception.EntityAlreadyExistsException;
+import com.restaurant.system.model.exception.EntityNotFoundException;
 import com.restaurant.system.repository.CustomerRepository;
 import com.restaurant.system.repository.ReservationRepository;
 import com.restaurant.system.repository.TableRepository;
@@ -31,7 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
         log.info("Creating new Reservation with id {}", reservation.getID());
 
         if (reservationRepository.existsById(reservation.getID()))
-            throw new IllegalArgumentException(); // TODO create ReservationAlreadyExists exception
+            throw new EntityAlreadyExistsException(Reservation.class, "id " + reservation.getID());
 
         Optional<Customer> customer = customerRepository.findById(reservation.getCustomer().getID());
 
@@ -68,7 +68,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         Reservation reservation = reservationRepository.findByTableID(tableId);
         if (reservation == null)
-            throw new IllegalArgumentException(); // TODO
+            throw new EntityNotFoundException(Reservation.class, "tableID " + tableId);
 
         return reservation;
     }
@@ -79,7 +79,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         Reservation reservation = reservationRepository.findByCustomerID(customerId);
         if (reservation == null)
-            throw new IllegalArgumentException(); // TODO
+            throw new EntityNotFoundException(Reservation.class, "customerID " + customerId);
 
         return reservation;
     }
