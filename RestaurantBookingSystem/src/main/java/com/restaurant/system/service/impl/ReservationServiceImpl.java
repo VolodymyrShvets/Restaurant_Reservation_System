@@ -81,6 +81,8 @@ public class ReservationServiceImpl implements ReservationService {
         if (reservation == null)
             throw new EntityNotFoundException(Reservation.class, "customerID " + customerId);
 
+        reservation.setCustomer(customerRepository.findById(customerId).get());
+
         return reservation;
     }
 
