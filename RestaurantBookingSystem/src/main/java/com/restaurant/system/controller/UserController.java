@@ -35,6 +35,12 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/customer/{customerEmail}")
+    public Customer getCustomer(@PathVariable String customerEmail) {
+        return userService.getCustomer(customerEmail);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
