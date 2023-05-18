@@ -1,6 +1,7 @@
 package com.restaurant.system.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class Reservation {
     @OneToOne
     @JoinColumn(name = "restaurant_table_ID", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonManagedReference
     private RestaurantTable table;
 
     @ManyToOne

@@ -32,6 +32,7 @@ public class RestaurantTable {
     private Place place;
 
     @OneToOne(mappedBy = "table")
+    @JsonBackReference
     private Reservation reservation;
 
     RestaurantTable(String id) {
