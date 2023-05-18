@@ -19,13 +19,13 @@ public class ReservationController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{tableId}")
+    @GetMapping("/table/{tableId}")
     public Reservation getReservationByTableID(@PathVariable long tableId) {
         return reservationService.getReservationByTableID(tableId);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{customerId}")
+    @GetMapping("/customer/{customerId}")
     public Reservation getReservationByCustomerID(@PathVariable long customerId) {
         return reservationService.getReservationByCustomerID(customerId);
     }
