@@ -2,6 +2,7 @@ package com.restaurant.system.service.impl;
 
 import com.restaurant.system.model.Administrator;
 import com.restaurant.system.model.Customer;
+import com.restaurant.system.model.Reservation;
 import com.restaurant.system.model.User;
 import com.restaurant.system.model.exception.EntityAlreadyExistsException;
 import com.restaurant.system.model.exception.EntityNotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -149,6 +151,20 @@ public class UserServiceImpl implements UserService {
         log.info("Deleting the User with email {}", email);
         repository.deleteByEmail(email);
         log.info("User with email {} successfully deleted", email);
+    }
+
+    @Override
+    public Customer getCustomer(String customerEmail) {
+        log.info("Receiving customer with email {}", customerEmail);
+
+        User storedUser = repository.findByEmail(customerEmail);
+        if (storedUser == null)
+            throw new EntityNotFoundException(Customer.class, "email " + customerEmail);
+
+        Customer customer = (Customer) storedUser;
+        customer.setReservations(Collections.singletonList(reservationService.getReservationByCustomerID(customer.getID())));
+
+        return customer;
     }
 
     private String getDiscriminatorOfUser(User user) {

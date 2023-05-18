@@ -18,4 +18,6 @@ public interface UserService {
     User updateUser(User user);
 
     void deleteUser(String email);
+
+    Customer getCustomer(String customerEmail);
 }
